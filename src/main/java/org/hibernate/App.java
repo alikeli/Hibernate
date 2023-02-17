@@ -14,14 +14,19 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person1 = new Person("Test 1", 15);
-            Person person2 = new Person("Test 2", 25);
-            Person person3 = new Person("Test 3", 35);
-            session.save(person1);
-            session.save(person2);
+//            Person person = session.get(Person.class, 2);
+//            person.setName("New name2");
+//            Person person1 = session.get(Person.class, 5);
+//            session.delete(person1);
+
+            Person person3 = new Person("Some name", 30);
             session.save(person3);
 
+
+
             session.getTransaction().commit();
+
+            System.out.println(person3.getId());
         } finally {
             sessionFactory.close();
         }
