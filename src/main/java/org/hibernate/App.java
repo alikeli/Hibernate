@@ -1,64 +1,73 @@
 package org.hibernate;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.model.Item;
 import org.hibernate.model.Person;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Hello world!
- */
+
 public class App {
     public static void main(String[] args) {
-        Configuration configuration = new org.hibernate.cfg.Configuration().addAnnotatedClass(Person.class);
+        Configuration configuration = new Configuration().addAnnotatedClass(Person.class).addAnnotatedClass(Item.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
         try {
             session.beginTransaction();
+// show people's items
+//            Person person = session.get(Person.class, 3);
+//            System.out.println(person);
+//            List<Item> items = person.getItems();
+//            System.out.println(items);
 
+
+            //--------------------------
+            //show item's people
+//            Item item = session.get(Item.class, 5);
+//            Person person = item.getOwner();
+//            System.out.println(person);
+            //--------------------------
+            //add items
 //            Person person = session.get(Person.class, 2);
-//            person.setName("New name2");
-//            Person person1 = session.get(Person.class, 5);
-//            session.delete(person1);
-
-//            Person person3 = new Person("Some name", 30);
-//            session.save(person3);
+//            Item newItem = new Item("Item from Hibernate4", person);
+//            person.getItems().add(newItem);
 //
-//            List<Person>people = session.createQuery("FROM Person where name = 'Test 1'").getResultList();
-//            for (Person person : people) {
-//                System.out.println(person);
-//            }
+//            session.save(newItem);
+
+            //--------------------------
+            //add people and his item
+
+//            Person person = new Person("Test", 24);
+//            Item newItem = new Item("new Item", person);
 //
-//            List<Person>people1= session.createQuery("FROM Person where age > 15 ").getResultList();
-//            for (Person person : people1) {
-//                System.out.println(person);
+//            person.setItems(new ArrayList<>(Collections.singleton(newItem)));
+//            session.save(person);
+//            session.save(newItem);
+            //--------------------------
+            // delete items by id
+
+//            Person person = session.get(Person.class, 3);
+//            List<Item> items = person.getItems();
+//
+//            for (Item item : items) {
+//                session.remove(item);
+//
 //            }
+//            person.getItems().clear();
+//
+//
+            // delete person
 
-//            List<Person>people2= session.createQuery("FROM Person where name LIKE 'T%'").getResultList();
-//            for (Person person : people2) {
-//                System.out.println(person);
-//            }
+            Person person = session.get(Person.class, 2);
+            session.remove(person);
 
-          session.createQuery("UPDATE Person set name = 'Tom' where age > 30").executeUpdate();
-
-            List<Person>people= session.createQuery("FROM Person ").getResultList();
-            for (Person person : people) {
-                System.out.println(person);
-            }
-            System.out.println();
-            session.createQuery("DELETE Person where age < 20").executeUpdate();
-
-            List<Person>people1= session.createQuery("FROM Person ").getResultList();
-            for (Person person : people1) {
-                System.out.println(person);
-            }
-
-
-
+            person.getItems().forEach(item -> item.setOwner(null));
 
             session.getTransaction().commit();
 
-            //System.out.println(person3.getId());
         } finally {
             sessionFactory.close();
         }

@@ -2,26 +2,38 @@ package org.hibernate.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="person")
+@Table(name = "Person")
 public class Person {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-    @Column(name="age")
+    @Column(name = "age")
     private int age;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
+
 
     public Person() {
     }
 
     public Person(String name, int age) {
-        this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     public int getId() {
@@ -49,7 +61,7 @@ public class Person {
     }
 
     @Override
-    public String  toString() {
+    public String toString() {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
